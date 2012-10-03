@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# Init file for Apache Kafka
+#
+# chkconfig: 35 85 15
+# description: Apache Kafka is a distributed publish-subscribe messaging system
+# processname: kafka
+# config: /etc/kafka/servers.properties
+# pidfile: /var/run/kafa.pid
+
+. /etc/rc.d/init.d/functions
+
+SYSCONFIG="/etc/sysconfig/kafka"
+KAFKA_BASEDIR=${KAFKA_BASEDIR-/usr/lib/kafka}
+PIDFILE="/var/run/kafka.pid"
+
+. "$SYSCONFIG" || true
+
+CMD="$KAFKA_BASEDIR/bin/kafka-run-class.sh kafka.Kafka /etc/kafka/server.properties & echo \$! > $PIDFILE"
+
+start()
+{
+  echo -n $"Starting kafka: "
+  touch $PIDFILE && chown kafka $PIDFILE
+  export KAFKA_OPTS
+  daemon --user kafka --pidfile $PIDFILE "$CMD"
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/kafka && success || failure
+  echo
+  return $RETVAL
+}
+
+stop()
+{
+  echo -n $"Stopping kafka: "
+  killproc -p $PIDFILE kafka
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/kafka
+  return $RETVAL
+}
+
+restart () {
+  stop
+  start
+}
+
+RETVAL=0
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload|force-reload)
+    restart
+    ;;
+  condrestart)
+    [ -f /var/lock/subsys/kafka ] && restart || :
+    ;;
+  status)
+    status -p $PIDFILE kafka
+    RETVAL=$?
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart}"
+    RETVAL=1
+esac
+
+exit $RETVAL
