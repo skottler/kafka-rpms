@@ -6,7 +6,7 @@
 # description: Apache Kafka is a distributed publish-subscribe messaging system
 # processname: kafka
 # config: /etc/kafka/servers.properties
-# pidfile: /var/run/kafa.pid
+# pidfile: /var/run/kafka.pid
 
 . /etc/rc.d/init.d/functions
 
