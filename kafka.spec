@@ -15,8 +15,8 @@ Source2: log4j.properties
 Source3: server.properties
 Source4: sysconfig
 BuildRoot: %{_tmppath}/%{name}-%{rel_ver}-%{release}-root
-BuildRequires: java-1.6.0-openjdk-devel
-Requires: java-1.6.0-openjdk
+BuildRequires: java-1.7.0-openjdk-devel
+Requires: java-1.7.0-openjdk
 Requires(post): chkconfig initscripts
 Requires(pre): chkconfig initscripts
 AutoReqProv: no
@@ -77,10 +77,10 @@ install -p -d %{buildroot}%{_kafka_noarch_libdir}
 cp -r bin core lib lib_managed project %{buildroot}%{_kafka_noarch_libdir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/kafka
-install -p -D -m 644 server.properties %{buildroot}%{_sysconfdir}/kafka
-install -p -D -m 644 log4j.properties %{buildroot}%{_sysconfdir}/kafka
-install -p -D -m 644 sysconfig %{buildroot}%{_sysconfdir}/sysconfig/kafka
-install -p -D -m 755 sysv %{buildroot}%{_initrddir}/kafka
+install -p -D -m 755 %{S:1} %{buildroot}%{_initrddir}/kafka
+install -p -D -m 644 %{S:2} %{buildroot}%{_sysconfdir}/kafka
+install -p -D -m 644 %{S:3} %{buildroot}%{_sysconfdir}/kafka
+install -p -D -m 644 %{S:4} %{buildroot}%{_sysconfdir}/sysconfig/kafka
 
 install -d %{buildroot}%{_localstatedir}/lib/kafka
 install -d %{buildroot}%{_localstatedir}/log/kafka
@@ -118,5 +118,5 @@ if [ "$1" -ge "1" ] ; then
 fi
 
 %changelog
-* Thu Oct 03 2012  Sam Kottler <sam@kottlerdevelopment.com - 0.7.0-1
+* Thu Oct 03 2012  Sam Kottler <sam@kottlerdevelopment.com> - 0.7.0-1
 - Initial package creation.
