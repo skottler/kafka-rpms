@@ -1,6 +1,6 @@
 %define _noarch_libdir /usr/lib 
 
-%define rel_ver 0.7.0
+%define rel_ver 0.7.2
 
 Summary: A high-throughput distributed messaging system.
 Name: kafka
@@ -9,7 +9,7 @@ Release: 1
 License: Apache License v2.0
 Group: Applications/Databases
 URL: http://incubator.apache.org/kafka/
-Source0: http://people.apache.org/~nehanarkhede/kafka-0.7.0-incubating/kafka-0.7.0-incubating-src.tar.gz
+Source0: http://skottler.fedorapeople.org/kafka-%{rel_ver}.tar.gz
 Source1: kafka.init
 Source2: log4j.properties
 Source3: server.properties
@@ -60,7 +60,7 @@ design page for more details.
 %define _kafka_noarch_libdir %{_noarch_libdir}/kafka
 
 %prep
-%setup -q -n kafka-%{rel_ver}-incubating-src
+%setup -q -n kafka-%{rel_ver}
 
 %build
 ./sbt update
