@@ -120,3 +120,5 @@ fi
 %changelog
 * Thu Oct 03 2012  Sam Kottler <sam@kottlerdevelopment.com> - 0.7.0-1
 - Initial package creation.
+* Sun Oct 21 2012 Sam Kottler <sam@kottlerdevelopment.com> - 0.7.2-1
+-Bumped package version to 0.7.2
