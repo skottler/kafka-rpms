@@ -1,6 +1,6 @@
 %define _noarch_libdir /usr/lib 
 
-%define rel_ver 0.7.2
+%define rel_ver 0.8.0
 
 Summary: A high-throughput distributed messaging system.
 Name: kafka
@@ -9,7 +9,7 @@ Release: 1
 License: Apache License v2.0
 Group: Applications/Databases
 URL: http://incubator.apache.org/kafka/
-Source0: http://skottler.fedorapeople.org/kafka-%{rel_ver}.tar.gz
+Source0: http://www.interior-dsgn.com/apache/kafka/%{rel_ver}/kafka-%{rel_ver}-src.tgz
 Source1: kafka.init
 Source2: log4j.properties
 Source3: server.properties
@@ -17,6 +17,7 @@ Source4: sysconfig
 BuildRoot: %{_tmppath}/%{name}-%{rel_ver}-%{release}-root
 BuildRequires: java-1.7.0-openjdk-devel
 Requires: java-1.7.0-openjdk
+Requires: log4j
 Requires(post): chkconfig initscripts
 Requires(pre): chkconfig initscripts
 AutoReqProv: no
@@ -60,7 +61,7 @@ design page for more details.
 %define _kafka_noarch_libdir %{_noarch_libdir}/kafka
 
 %prep
-%setup -q -n kafka-%{rel_ver}
+%setup -q -n kafka-%{rel_ver}-src
 
 %build
 ./sbt update
@@ -74,7 +75,7 @@ chmod +x bin/kafka-run-class.sh
 %install
 rm -rf %{buildroot}
 install -p -d %{buildroot}%{_kafka_noarch_libdir}
-cp -r bin core lib lib_managed project %{buildroot}%{_kafka_noarch_libdir}
+cp -r bin core lib project %{buildroot}%{_kafka_noarch_libdir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/kafka
 install -p -D -m 755 %{S:1} %{buildroot}%{_initrddir}/kafka
@@ -90,7 +91,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README.md LICENSE NOTICE DISCLAIMER
+%doc README.md LICENSE NOTICE
 %dir %attr(0750, kafka, kafka) %{_localstatedir}/lib/kafka
 %dir %attr(0750, kafka, kafka) %{_localstatedir}/log/kafka
 %{_kafka_noarch_libdir}
