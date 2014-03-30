@@ -1,6 +1,6 @@
 %define _noarch_libdir /usr/lib 
 
-%define rel_ver 0.8.0
+%define rel_ver 0.8.1
 
 Summary: A high-throughput distributed messaging system.
 Name: kafka
@@ -119,6 +119,9 @@ if [ "$1" -ge "1" ] ; then
 fi
 
 %changelog
+* Sun Mar 30 2014 Sam Kottler <sam@kottlerdevelopment.com> - 0.8.1-1
+- Bumped to 0.8.1 since it's now available
+
 * Sun Oct 21 2012 Sam Kottler <sam@kottlerdevelopment.com> - 0.7.2-1
 - Bumped package version to 0.7.2
 
