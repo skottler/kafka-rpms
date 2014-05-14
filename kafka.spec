@@ -101,6 +101,8 @@ rm -rf %{buildroot}
 %pre
 getent group kafka >/dev/null || groupadd -r kafka
 getent passwd kafka >/dev/null || useradd -r -g kafka -d / -s /sbin/nologin kafka
+mkdir -p /usr/lib/kafka/logs
+chown -R kafka:kafka /usr/lib/kafka/logs
 exit 0
 
 %post
