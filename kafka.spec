@@ -1,6 +1,6 @@
 %define _noarch_libdir /usr/lib 
 
-%define rel_ver 0.8.1
+%define rel_ver 0.8.1.1
 
 Summary: A high-throughput distributed messaging system.
 Name: kafka
@@ -9,7 +9,7 @@ Release: 1
 License: Apache License v2.0
 Group: Applications/Databases
 URL: http://incubator.apache.org/kafka/
-Source0: http://www.interior-dsgn.com/apache/kafka/%{rel_ver}/kafka-%{rel_ver}-src.tgz
+Source0: http://www.gtlib.gatech.edu/pub/apache/kafka/%{rel_ver}/kafka-%{rel_ver}-src.tgz
 Source1: kafka.init
 Source2: log4j.properties
 Source3: server.properties
@@ -64,8 +64,7 @@ design page for more details.
 %setup -q -n kafka-%{rel_ver}-src
 
 %build
-./sbt update
-./sbt package
+./gradlew :core:build -x :core:signArchives -x :core:test
 
 head -n -1 bin/kafka-run-class.sh > run-class.sh
 echo "exec \$JAVA \$KAFKA_OPTS \$KAFKA_JMX_OPTS -cp \$CLASSPATH \$@" >> run-class.sh
@@ -75,7 +74,7 @@ chmod +x bin/kafka-run-class.sh
 %install
 rm -rf %{buildroot}
 install -p -d %{buildroot}%{_kafka_noarch_libdir}
-cp -r bin core lib project %{buildroot}%{_kafka_noarch_libdir}
+cp -r bin core lib %{buildroot}%{_kafka_noarch_libdir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/kafka
 install -p -D -m 755 %{S:1} %{buildroot}%{_initrddir}/kafka
@@ -119,6 +118,9 @@ if [ "$1" -ge "1" ] ; then
 fi
 
 %changelog
+* Wed May 14 2014 Sam Kottler <sam@kottlerdevelopment.com> - 0.8.1.1-1
+- Update to 0.8.1.1 and use gradle
+
 * Sun Mar 30 2014 Sam Kottler <sam@kottlerdevelopment.com> - 0.8.1-1
 - Bumped to 0.8.1 since it's now available
 
